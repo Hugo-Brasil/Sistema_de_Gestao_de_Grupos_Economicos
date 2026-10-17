@@ -1,0 +1,103 @@
+PROJETO — SERVIÇOS, VENDAS, MÉDIA E RANKING DE ARRECADAÇÃO
+
+Esta versão implementa a separação entre o cadastro de serviços e os
+atendimentos realizados, além dos totais por entidade e por grupo econômico.
+Também implementa as opções 15 (média) e 16 (ranking).
+
+COMO USAR
+
+Abra a pasta que contém pom.xml na sua IDE e use o Java 17, já indicado no
+projeto original. Execute src/main/java/com/gerenciamento/Main.java.
+
+1 — Cadastrar produto: adiciona produtos ao estoque da entidade escolhida.
+2 — Cadastrar serviço: registra os serviços disponíveis da entidade escolhida.
+3 — Vender produto: escolhe os produtos e registra uma venda para um cliente.
+4 — Prestar serviço: escolhe os serviços cadastrados e registra um atendimento.
+13 — Relatório da entidade: mostra vendas, serviços e arrecadação total.
+14 — Relatório do grupo: mostra os totais das entidades e do grupo.
+15 — Média por entidade: divide o total do grupo pela quantidade de entidades.
+16 — Ranking: mostra as entidades da maior para a menor arrecadação.
+21 — Quantidade de vendas: conta cada venda uma única vez, mesmo contendo
+     vários produtos.
+
+O cadastro de um serviço não aumenta a arrecadação. O serviço entra no total
+quando selecionado e registrado em um atendimento. Um atendimento pode conter
+vários serviços e possui um cliente.
+
+ESTRUTURA DAS LISTAS
+
+Entidade.servicosCadastrados: ArrayList<Servico> com o cadastro disponível.
+Prestacao.servicos: ArrayList<Servico> escolhido para um atendimento.
+Entidade.servicos: ArrayList<Prestacao> com os atendimentos realizados.
+Venda.produtos: ArrayList<Produto> com os produtos daquela venda.
+Entidade.vendas: ArrayList<Venda> com as vendas realizadas.
+GrupoEconomico.entidades: ArrayList<Entidade> com as entidades do grupo.
+
+Cada serviço selecionado é registrado com new Servico(tipo, preco), usando
+os valores daquele momento. Assim, uma alteração posterior no cadastro não
+modifica o preço dos atendimentos anteriores.
+
+MÉTODOS DE CÁLCULO
+
+Prestacao.calcularTotalPrestacao(): soma os serviços do atendimento.
+Venda.calcularTotalVenda(): soma os produtos da venda.
+Entidade.calcularTotalServicos(): soma os atendimentos da entidade.
+Entidade.calcularTotalVendas(): soma as vendas da entidade.
+Entidade.calcularTotalArrecadado(): soma vendas e serviços.
+GrupoEconomico.calcularTotalArrecadado(): soma os totais das entidades.
+GrupoEconomico.calcularMediaArrecadacao(): divide o total do grupo pela
+quantidade de entidades cadastradas, incluindo as que arrecadaram zero.
+Se não houver entidades, retorna zero; o relatório informa a ausência de
+cadastros, sem realizar divisão por zero.
+
+GrupoEconomico.relatorioMediaArrecadacao(): exibe quantidade de entidades,
+total do grupo e média por entidade.
+
+GrupoEconomico.rankingEntidadesArrecadacao(): cria um ArrayList temporário
+com as entidades. A cada rodada, procura a maior arrecadação usando for e
+if, exibe a entidade e remove apenas da lista temporária. A ordem da lista
+original e os índices usados no menu permanecem iguais.
+
+Empates compartilham a posição, no modelo 1, 1, 3. Dentro de um empate,
+as entidades são apresentadas na ordem de cadastro. O ranking inclui as
+entidades que ainda não arrecadaram.
+
+OUTROS AJUSTES
+
+- A venda é adicionada à lista somente após a escolha de todos os produtos.
+- Os índices dos produtos são mostrados novamente após cada remoção.
+- As seleções verificam se o índice é menor que o tamanho da lista.
+- Venda e prestação sem itens válidos não são registradas.
+- Os métodos compartilham a mesma entrada Scanner para evitar campos pulados.
+- As consultas do grupo nas opções 6 e 8 recebem o grupo criado no Main.
+
+RECURSOS E ESCOPO
+
+Foram mantidos os recursos usados no projeto: ArrayList, construtores,
+getters/setters, Scanner, if/else, for, do/while, float e chamadas de métodos.
+Não foram acrescentados try, catch ou throw. O tratamento já existente na
+exportação CSV foi preservado. A leitura de opções no Main é direta.
+
+Produto continua sem campo de quantidade: cada entrada no estoque representa
+um produto. O total corresponde aos preços das operações registradas;
+não foi acrescentado controle separado de recebimento de pagamentos.
+
+A condição da opção 11 continua com o marcador FALTA do original. Não há
+uma opção 11 descrita no menu original. As opções 15 e 16 estão implementadas.
+
+As classes compiladas antigas da pasta target não foram incluídas no ZIP.
+A IDE deve compilar os fontes desta versão.
+
+VERIFICAÇÃO
+
+Fontes compilados com Java 17. Verificados: cadastro sem arrecadação;
+atendimento com vários serviços; reutilização de serviço; preservação do
+preço anterior; venda com vários produtos sem duplicação; esgotamento do
+estoque; índices inválidos; totais de entidades diferentes; relatórios 13/14;
+consultas do grupo e quantidade de vendas.
+Também verificados: média com entidades sem arrecadação; grupo vazio;
+ranking decrescente; empates; lista original preservada; e opções 15/16
+integradas ao menu.
+
+Exemplo executado pelo menu: vendas de R$ 150 e serviços de R$ 250 na
+primeira entidade, mais R$ 300 em serviços na segunda: total do grupo R$ 700.
